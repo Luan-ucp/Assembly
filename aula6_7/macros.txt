@@ -1,0 +1,77 @@
+%macro ordenacao 0
+	
+        mov al, 0
+        mov ecx, vet
+        jmp for2cond
+
+for2body:
+                mov bl, al
+                mov edx, ecx
+                jmp for1cond
+
+        for1body:
+                mov ah,[ecx]
+                mov bh,[edx]
+                cmp ah, bh
+                jle end
+                mov [ecx], bh
+                mov [edx], ah
+        end:
+
+        inc bl
+        inc edx
+
+        for1cond:
+                cmp bl, [size]
+                jl for1body
+        inc al
+        inc ecx
+
+for2cond:
+         cmp al,[size]
+         jl for2body
+ 
+%endmacro
+
+;***********************************************************************************
+
+%macro mediana 0
+
+	mov al, [size]	;move o tamanho do vetor, que é impar
+	mov bl, 2	 
+	div bl		;divido por dois para achar a posicao no vetor
+	mov ecx, eax	;movo para ecx o valor da divisao
+	dec ecx
+		
+	lea ebx, [vet+ecx]	;movo para ebx o resultado da mediana
+	mov [median], ebx	;salvo na memoria o valor da mediana
+	
+%endmacro
+
+;***********************************************************************************
+
+%macro exibe 0
+
+        mov ecx, vet
+        mov BYTE [count], 0
+        jmp for3cond
+
+for3body:
+	mov esi, [ecx]	;move para esi o conteudo de ecx
+	add esi, 48	;soma 48 a esi, para obter o valor em hex
+	mov [ecx], esi	;retorna ao vetor, com endereco em ecx, o valor hex de esi
+
+        mov eax,4
+        mov ebx, 1
+        mov edx,1
+        int 0x80
+        inc ecx
+        inc BYTE [count]
+
+for3cond:
+        mov al, [count]
+        cmp al, [size]
+        jl for3body
+
+%endmacro
+
