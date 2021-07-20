@@ -1,0 +1,21 @@
+%macro fibonacci 1
+	
+	mov eax, 0
+	mov ebx, 0
+	mov ecx, 0
+	mov edx, 0	
+	
+	mov al, [n]
+	
+	cmp al, 2
+	jb return	;se for 0 ou 1 ele ira retornar o valor de 0 ou  1 que são menores que 2
+
+	mov bl, al
+	sub al, 1	;f(n-1)
+	sub bl, 2	;f(n-2)
+	
+	add al, bl	;f(n-1) + f(n-2)
+
+return:
+	mov %1, al
+%endmacro

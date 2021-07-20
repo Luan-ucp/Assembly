@@ -1,0 +1,60 @@
+%macro soma 1
+		mov al, 1
+		mov cl, [expo]
+		
+		cmp cl, 0	;se o expoente for 0, retornara 1 ao al
+		jz fim
+		
+		mov al, [base]
+		cmp cl, 1	;se o expoente for 1, retorna apenas a base
+		je fim 
+		
+		mov cl, [base]
+		mov al, [base]
+		mov bl, [base]
+		
+loopsoma0: 	dec cl
+		add al, bl
+	   	cmp cl, 1
+	   	ja loopsoma0	;este loop faz o calculo do valor de um quadrado
+
+		mov cl, [expo] 
+		cmp cl, 2
+		je fim 		;se o expoente for 2, pula pro pro fim porque já foi calculado um quadrado
+		
+		mov cl, [base]	;move a base para cl, para saber quantas vezes devo somar o quadrado
+		mov ebx, 0
+		mov bl, al		;move o valor do quadrado para bl
+
+loopsoma1:	dec cl			;contador do expoente
+		add al, bl		;contador do valor do quadrado 		
+		cmp cl, 1		
+		ja loopsoma1
+
+fim:
+		mov %1, al		
+%endmacro
+
+%macro multi 1
+	
+	mov cl, [expo]		;contador, quantas vezes devo multpilicar
+	mov bl, [base]		;qual valor deve multiplicar
+	mov al, [base]
+
+	cmp cl, 0	
+	jz fim 		;se o expoente for 0, retorn 1 ao al
+
+loop:	mul bl		;multpilica bl [base] com o al acumulado
+	dec cl
+	cmp cl, 0
+	ja loop
+
+	mov %1, al
+	jmp end
+
+fim: 	mov al, 1
+	mov %1, al
+
+end:
+		
+%endmacro

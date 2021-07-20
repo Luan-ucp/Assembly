@@ -1,0 +1,53 @@
+%macro op_a 1
+	
+	mov al, [a]
+	mov bl, [b]
+	
+if:		cmp al, bl	
+		ja else		;if a<b
+	
+	for:	add dl, cl	;dl = res
+		inc cl		;i++
+		cmp cl, al	
+		jb for		;i<a
+		jmp return
+	
+else:	mul bl		;a*b
+	mov dl, al	;res = a*b
+
+return:	mov %1, dl	;returna res
+	
+
+%endmacro
+
+%macro op_b 1
+	
+	mov cl, 1	;count
+	mov al, [a]
+	mov dl, 0	;res
+
+while:			cmp cl, al
+			ja return	;se for maior que a(al), vai pro return
+			inc cl		;já soma 1 ao count (cl)
+	
+	if:		cmp cl, 5
+			ja else_if	;se for maior que 5, vai pro else_if
+			add dl, 3	;res = res + 3
+			jmp while
+	
+	else_if:	cmp cl, 10
+			jb else		;se for menor que 10, ja pula pro else
+			cmp cl, 15	
+			ja else		;se for maior que 15, pula pro else
+			
+			add dl, 2	;se chegou aqui, é porque satisfez todas as cond acima, ou seja, + 2
+			jmp while
+	
+	else:		inc dl		;res++
+			jmp while
+				
+
+return: mov %1, dl 
+
+	
+%endmacro
